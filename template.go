@@ -21,6 +21,10 @@ func NewTemplate(w http.ResponseWriter) *Template {
 	}
 }
 
-func (t Template) render(filenames ...string) error {
+func (t *Template) render(filenames ...string) error {
 	return template.Must(t.layout.ParseFiles(filenames...)).Execute(t.w, t.data)
+}
+
+func (t *Template) set(key string, data interface{}) {
+	t.data[key] = data
 }

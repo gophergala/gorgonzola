@@ -8,12 +8,13 @@ import (
 
 type Gorgonzola struct {
 	c       *Config
-	storage *Storage
+	storage Storage
 }
 
 func NewGorgonzola() *Gorgonzola {
 	return &Gorgonzola{
-		c: NewConfig(),
+		c:       NewConfig(),
+		storage: NewDatastore(),
 	}
 }
 
@@ -22,7 +23,12 @@ type httpHandler func(http.ResponseWriter, *http.Request) error
 func (g *Gorgonzola) setHandlers() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", httpHandler(g.indexHandler).ServeHTTP).Methods("GET")
+	r.HandleFunc("/add.html", httpHandler(g.addHandler).ServeHTTP).Methods("GET", "POST")
 	http.Handle("/", r)
+}
+
+func (g *Gorgonzola) Run() {
+	g.setHandlers()
 }
 
 func (fn httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

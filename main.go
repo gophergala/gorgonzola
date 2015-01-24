@@ -1,5 +1,5 @@
 package gorgonzola
 
 func init() {
-	NewGorgonzola().setHandlers()
+	NewGorgonzola().Run()
 }
