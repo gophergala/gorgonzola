@@ -44,7 +44,7 @@ type JsonJobs struct {
 	Jobs           []Job  `json:"jobs"`
 }
 
-func validate(document string) error {
+func validateDoc(document string) error {
 	schemaLoader := gojsonschema.NewReferenceLoader(schemaURL)
 	documentLoader := gojsonschema.NewStringLoader(document)
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
