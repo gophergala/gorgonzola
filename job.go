@@ -21,7 +21,7 @@ type Equity struct {
 	To   float32 `json:"to"`
 }
 
-type Job struct {
+type JsonJob struct {
 	Position    string      `json:"position"`
 	Title       string      `json:"title"`
 	Description string      `json:"description"`
@@ -37,12 +37,12 @@ type Job struct {
 }
 
 type JsonJobs struct {
-	Company        string `json:"company"`
-	Url            string `json:"url"`
-	RemoteFriendly bool   `json:"remoteFriendly"`
-	Market         string `json:"market"`
-	Size           string `json:"size"`
-	Jobs           []Job  `json:"jobs"`
+	Company        string    `json:"company"`
+	Url            string    `json:"url"`
+	RemoteFriendly bool      `json:"remoteFriendly"`
+	Market         string    `json:"market"`
+	Size           string    `json:"size"`
+	Jobs           []JsonJob `json:"jobs"`
 }
 
 func validateDoc(document string) error {

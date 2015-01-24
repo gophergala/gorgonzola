@@ -22,10 +22,14 @@ func (ds *Datastore) SaveJsonJobs(r *http.Request, jj *JsonJobs) error {
 	return nil
 }
 
-func (ds *Datastore) AddURL(url string) (string, error) {
+func (ds *Datastore) AddURL(r *http.Request, url string) (string, error) {
 	return "", nil
 }
 
-func (ds *Datastore) GetJobs() ([]Job, error) {
+func (ds *Datastore) GetJobs(r *http.Request) ([]Job, error) {
+	return nil, nil
+}
+
+func (ds *Datastore) GetJob(r *http.Request, key string) (*Job, error) {
 	return nil, nil
 }

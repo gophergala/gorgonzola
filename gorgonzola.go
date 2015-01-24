@@ -23,6 +23,7 @@ type httpHandler func(http.ResponseWriter, *http.Request) error
 func (g *Gorgonzola) setHandlers() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", httpHandler(g.indexHandler).ServeHTTP).Methods("GET")
+	r.HandleFunc("/job/{key}", httpHandler(g.jobHandler).ServeHTTP).Methods("GET")
 	r.HandleFunc("/add.html", httpHandler(g.addHandler).ServeHTTP).Methods("GET", "POST")
 	http.Handle("/", r)
 }
