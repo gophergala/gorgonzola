@@ -5,7 +5,6 @@ import (
 )
 
 type Job struct {
-	Company
 }
 
 type Storage interface {
