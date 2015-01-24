@@ -15,7 +15,7 @@ func NewDatastore() *Datastore {
 }
 
 func (ds *Datastore) saveJsonJobs(c appengine.Context, jj *JsonJobs) error {
-	_, err := datastore.Put(c, datastore.NewIncompleteKey(c, "jobs", nil), jj)
+	_, err := datastore.Put(c, datastore.NewIncompleteKey(c, "Jobs", nil), jj)
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,9 @@ func (ds *Datastore) AddURL(r *http.Request, url string) error {
 	if err := getJSONJobs(c, link.Url, &jj); err != nil {
 		return err
 	}
-	ds.saveJsonJobs(c, &jj)
+	if err := ds.saveJsonJobs(c, &jj); err != nil {
+		return err
+	}
 	link.Fetched = time.Now()
 	if _, err := datastore.Put(c, key, link); err != nil {
 		return err
