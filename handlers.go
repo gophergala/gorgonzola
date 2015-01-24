@@ -29,12 +29,16 @@ func (g *Gorgonzola) jobHandler(w http.ResponseWriter, r *http.Request) error {
 
 func (g *Gorgonzola) addHandler(w http.ResponseWriter, r *http.Request) error {
 	tm := NewTemplate(w)
-	if r.Method == "POST" && r.FormValue("url") != "" {
-		id, err := g.storage.AddURL(r, r.FormValue("url"))
+	if r.Method == "POST" {
+		url := r.FormValue("url")
+		if err := validateURL(url); err != nil {
+			return err
+		}
+		err := g.storage.AddURL(r, url)
 		if err != nil {
 			return err
 		}
-		http.Redirect(w, r, "/task/"+id, http.StatusFound)
+		tm.set("saved", true)
 	}
 	return tm.render("templates/layout.html", "templates/add.html")
 }
