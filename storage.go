@@ -1,5 +1,5 @@
-package main
+package gorgonzola
 
-type JobStorage interface {
+type Storage interface {
 	SaveJsonJobs(jj JsonJobs) error
 }

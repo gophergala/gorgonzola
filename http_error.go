@@ -1,4 +1,4 @@
-package main
+package gorgonzola
 
 type HTTPError struct {
 	Err     error

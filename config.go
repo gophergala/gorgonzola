@@ -1,11 +1,7 @@
-package main
+package gorgonzola
 
-type Config struct {
-	Server string
-}
+type Config struct{}
 
 func NewConfig() *Config {
-	return &Config{
-		Server: ":8000",
-	}
+	return &Config{}
 }

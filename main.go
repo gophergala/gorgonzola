@@ -1,5 +1,5 @@
-package main
+package gorgonzola
 
-func main() {
-	NewGorgonzola().Run()
+func init() {
+	NewGorgonzola().setHandlers()
 }

@@ -1,14 +1,14 @@
-package main
+package gorgonzola
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
 type Gorgonzola struct {
-	c *Config
+	c       *Config
+	storage *Storage
 }
 
 func NewGorgonzola() *Gorgonzola {
@@ -19,16 +19,10 @@ func NewGorgonzola() *Gorgonzola {
 
 type httpHandler func(http.ResponseWriter, *http.Request) error
 
-func (g *Gorgonzola) Run() {
+func (g *Gorgonzola) setHandlers() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", httpHandler(g.indexHandler).ServeHTTP).Methods("GET")
-
 	http.Handle("/", r)
-
-	log.Printf("Starting server at %s", g.c.Server)
-	if err := http.ListenAndServe(g.c.Server, nil); err != nil {
-		log.Fatal("Server error: ", err)
-	}
 }
 
 func (fn httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
