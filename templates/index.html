@@ -14,7 +14,7 @@
 		<tbody>
 		{{range $job := .jobs}}
 			<tr>
-				<td><a href="{{$job.CompanyURL}}" target="_blank">{{$job.CompanyName}}</td>
+				<td><a href="{{$job.CompanyURL}}" target="_blank" rel="nofollow">{{$job.CompanyName}}</td>
 				<td><a href="/job/{{$job.Hash}}">{{$job.Title}}</a></td>
 				<td>{{$job.Type}}</td>
 				<th>{{$job.Location}}</th>

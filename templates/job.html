@@ -4,7 +4,7 @@
 	<li class="active">{{.job.Title}}</li>
 </ol>
 <div itemscope itemtype="http://schema.org/JobPosting">
-	<h2><span itemprop="title">{{.job.Title}}</span> at <a href="{{.job.CompanyURL}}">{{.job.CompanyName}}</a></h2>
+	<h2><span itemprop="title">{{.job.Title}}</span> at <a href="{{.job.CompanyURL}}"  rel="nofollow">{{.job.CompanyName}}</a></h2>
 	<hr />
 	<h3>Description</h3>
 	<p itemprop="description">
@@ -33,7 +33,7 @@
 			<dt>Posted</dt>
 				<dd span itemprop="datePosted">{{.job.Posted}}</dd>
 			<dt>Details</dt>
-				<dd><a href="{{.job.URL}}">{{.job.URL}}</a></dd>
+				<dd><a href="{{.job.URL}}"  rel="nofollow">{{.job.URL}}</a></dd>
 		</dl>
 
 	<h3>Perks</h3>
@@ -56,7 +56,7 @@
 		</dl>
 
 	<h3>Apply</h3>
-	Apply here: <a href="{{.job.Apply}}">{{.job.Apply}}</a>
+	Apply here: <a href="{{.job.Apply}}"  rel="nofollow">{{.job.Apply}}</a>
 	<hr />
 </div>
 {{end}}
