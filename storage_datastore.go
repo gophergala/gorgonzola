@@ -48,22 +48,19 @@ func (ds *Datastore) disableOldJobs(c appengine.Context, key *datastore.Key) err
 	return nil
 }
 
-// AddURL adds new Json-job url to the job board
-func (ds *Datastore) AddURL(r *http.Request, url string) error {
-	c := appengine.NewContext(r)
-	link := &Link{
-		URL:     url,
-		Created: time.Now(),
+func (ds *Datastore) updateJobs(c appengine.Context, keyString string) error {
+	key, err := datastore.DecodeKey(keyString)
+	if err != nil {
+		return err
 	}
-	key := datastore.NewKey(c, "Link", url, 0, nil)
-	if _, err := datastore.Put(c, key, link); err != nil {
+	var link Link
+	if err := datastore.Get(c, key, &link); err != nil {
 		return err
 	}
 	if err := ds.disableOldJobs(c, key); err != nil {
 		return err
 	}
 	var jjraw []byte
-	var err error
 	if jjraw, err = getJSONJobsDoc(c, link.URL); err != nil {
 		return err
 	}
@@ -76,9 +73,24 @@ func (ds *Datastore) AddURL(r *http.Request, url string) error {
 		return err
 	}
 	link.Fetched = time.Now()
+	if _, err := datastore.Put(c, key, &link); err != nil {
+		return err
+	}
+	return nil
+}
+
+// AddURL adds new Json-job url to the job board
+func (ds *Datastore) AddURL(r *http.Request, url string) error {
+	c := appengine.NewContext(r)
+	link := &Link{
+		URL:     url,
+		Created: time.Now(),
+	}
+	key := datastore.NewKey(c, "Link", url, 0, nil)
 	if _, err := datastore.Put(c, key, link); err != nil {
 		return err
 	}
+	laterFunc.Call(c, key.Encode())
 	return nil
 }
 
@@ -110,13 +122,13 @@ func (ds *Datastore) GetJob(r *http.Request, hash string) (*Job, error) {
 // Update updates the job offers for single Link
 func (ds *Datastore) Update(r *http.Request) error {
 	c := appengine.NewContext(r)
-	q := datastore.NewQuery("Link").Order("-Fetched").Limit(1)
-	var links []Link
-	if _, err := q.GetAll(c, &links); err != nil {
+	q := datastore.NewQuery("Link").Order("-Fetched").Limit(1).KeysOnly()
+	keys, err := q.GetAll(c, nil)
+	if err != nil {
 		return err
 	}
-	if len(links) > 0 {
-		ds.AddURL(r, links[0].URL)
+	if len(keys) > 0 {
+		ds.updateJobs(c, keys[0].Encode())
 	}
 	return nil
 }

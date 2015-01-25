@@ -3,8 +3,19 @@ package gorgonzola
 import (
 	"net/http"
 
+	"log"
+
 	"github.com/gorilla/mux"
+
+	"appengine"
+	"appengine/delay"
 )
+
+var laterFunc = delay.Func("url", func(c appengine.Context, key string) {
+	if err := NewDatastore().updateJobs(c, key); err != nil {
+		log.Println(err)
+	}
+})
 
 // Gorgonzola is the main application structure
 type Gorgonzola struct {

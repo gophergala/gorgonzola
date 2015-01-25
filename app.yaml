@@ -13,5 +13,8 @@ handlers:
 - url: /task/update
   script: _go_app
   login: admin
+- url: /_ah/queue/go/delay
+  script: _go_app
+  login: admin
 - url: /.*
   script: _go_app
