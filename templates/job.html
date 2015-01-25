@@ -27,11 +27,11 @@
 			<dt>Location</dt>
 				<dd itemprop="jobLocation" itemscope itemtype="http://schema.org/Place">{{.job.Location}}</dd>
 			<dt>Salary</dt>
-				<dd>from {{.job.SalaryRangeFrom}} {{.job.SalaryRangeCurrency}} to <span itemprop="baseSalary">{{.job.SalaryRangeTo}}</span> <span temprop="salaryCurrency">{{.job.SalaryRangeCurrency}}</span></dd>
+				<dd>from {{.job.SalaryRangeFrom}} {{.job.SalaryRangeCurrency}} to <span itemprop="baseSalary">{{.job.SalaryRangeTo}}</span> <span itemprop="salaryCurrency">{{.job.SalaryRangeCurrency}}</span></dd>
 			<dt>Equity</dt>
 				<dd>from {{.job.EquityFrom}} to {{.job.EquityTo}}</dd>
 			<dt>Posted</dt>
-				<dd span itemprop="datePosted">{{.job.Posted}}</dd>
+				<dd itemprop="datePosted">{{.job.Posted}}</dd>
 			<dt>Details</dt>
 				<dd><a href="{{.job.URL}}"  rel="nofollow">{{.job.URL}}</a></dd>
 		</dl>
@@ -56,7 +56,7 @@
 		</dl>
 
 	<h3>Apply</h3>
-	Apply here: <a href="{{.job.Apply}}"  rel="nofollow">{{.job.Apply}}</a>
+	Apply here: <a href="{{.job.Apply}}" rel="nofollow"g>{{.job.Apply}}</a>
 	<hr />
 </div>
 {{end}}
