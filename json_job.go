@@ -29,7 +29,7 @@ type JsonJob struct {
 	URL         string      `json:"url"`
 	Type        string      `json:"type"`
 	Posted      string      `json:"posted"`
-	Location    string      `json:"location`
+	Location    string      `json:"location"`
 	Skills      []string    `json:"skills"`
 	SalaryRange SalaryRange `json:"salaryRange"`
 	Equity      Equity      `json:"equity"`
