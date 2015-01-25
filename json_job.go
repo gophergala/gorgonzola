@@ -2,6 +2,7 @@ package gorgonzola
 
 import (
 	"errors"
+	"time"
 
 	"github.com/xeipuuv/gojsonschema"
 )
@@ -25,7 +26,7 @@ type JsonJob struct {
 	Position    string      `json:"position"`
 	Title       string      `json:"title"`
 	Description string      `json:"description"`
-	Url         string      `json:"url"`
+	URL         string      `json:"url"`
 	Type        string      `json:"type"`
 	Posted      string      `json:"posted"`
 	Location    string      `json:"location`
@@ -38,7 +39,7 @@ type JsonJob struct {
 
 type JsonJobs struct {
 	Company        string    `json:"company"`
-	Url            string    `json:"url"`
+	URL            string    `json:"url"`
 	RemoteFriendly bool      `json:"remoteFriendly"`
 	Market         string    `json:"market"`
 	Size           string    `json:"size"`
@@ -67,14 +68,14 @@ func (jj *JsonJobs) getJobs() []*Job {
 	for _, job := range jj.Jobs {
 		result = append(result, &Job{
 			CompanyName:           jj.Company,
-			CompanyURL:            jj.Url,
+			CompanyURL:            jj.URL,
 			CompanyRemoteFriendly: jj.RemoteFriendly,
 			CompanyMarket:         jj.Market,
 			CompanySize:           jj.Size,
 			Position:              job.Position,
 			Title:                 job.Title,
 			Description:           job.Description,
-			Url:                   job.Url,
+			URL:                   job.URL,
 			Type:                  job.Type,
 			Posted:                job.Posted,
 			Location:              job.Location,
@@ -86,6 +87,7 @@ func (jj *JsonJobs) getJobs() []*Job {
 			EquityTo:              job.Equity.To,
 			Perks:                 job.Perks,
 			Apply:                 job.Apply,
+			Created:               time.Now(),
 		})
 	}
 	return result

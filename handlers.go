@@ -6,9 +6,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
+const firstPageJobsLimit = 100
+
 func (g *Gorgonzola) indexHandler(w http.ResponseWriter, r *http.Request) error {
 	tm := NewTemplate(w)
-	jobs, err := g.storage.GetJobs(r)
+	jobs, err := g.storage.GetJobs(r, firstPageJobsLimit)
 	if err != nil {
 		return err
 	}

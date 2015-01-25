@@ -57,8 +57,12 @@ func (ds *Datastore) AddURL(r *http.Request, url string) error {
 	return nil
 }
 
-func (ds *Datastore) GetJobs(r *http.Request) ([]Job, error) {
-	return nil, nil
+func (ds *Datastore) GetJobs(r *http.Request, limit int) ([]Job, error) {
+	c := appengine.NewContext(r)
+	q := datastore.NewQuery("Job").Order("-Created").Limit(limit)
+	var jobs []Job
+	_, err := q.GetAll(c, &jobs)
+	return jobs, err
 }
 
 func (ds *Datastore) GetJob(r *http.Request, key string) (*Job, error) {

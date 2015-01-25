@@ -24,7 +24,7 @@ type Job struct {
 	Position              string
 	Title                 string
 	Description           string
-	Url                   string
+	URL                   string
 	Type                  string
 	Posted                string
 	Location              string
@@ -36,11 +36,12 @@ type Job struct {
 	EquityTo              float32
 	Perks                 []string
 	Apply                 string
+	Created               time.Time
 }
 
 type Storage interface {
 	AddURL(r *http.Request, url string) error
-	GetJobs(r *http.Request) ([]Job, error)
+	GetJobs(r *http.Request, limit int) ([]Job, error)
 	GetJob(r *http.Request, key string) (*Job, error)
 }
 
@@ -49,7 +50,7 @@ func (j *Job) getHash() string {
 	io.WriteString(h, j.CompanyName)
 	io.WriteString(h, j.Position)
 	io.WriteString(h, j.Title)
-	io.WriteString(h, j.Url)
+	io.WriteString(h, j.URL)
 	io.WriteString(h, j.Posted)
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
