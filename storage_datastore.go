@@ -1,6 +1,7 @@
 package gorgonzola
 
 import (
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -15,9 +16,13 @@ func NewDatastore() *Datastore {
 }
 
 func (ds *Datastore) saveJsonJobs(c appengine.Context, jj *JsonJobs) error {
-	_, err := datastore.Put(c, datastore.NewIncompleteKey(c, "Jobs", nil), jj)
-	if err != nil {
-		return err
+	for _, job := range jj.getJobs() {
+		job.Hash = job.getHash()
+		key := datastore.NewKey(c, "Job", job.Hash, 0, nil)
+		_, err := datastore.Put(c, key, job)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -32,10 +37,16 @@ func (ds *Datastore) AddURL(r *http.Request, url string) error {
 	if _, err := datastore.Put(c, key, link); err != nil {
 		return err
 	}
-	var jj JsonJobs
-	if err := getJSONJobs(c, link.Url, &jj); err != nil {
+	var jjraw []byte
+	var err error
+	if jjraw, err = getJSONJobsDoc(r, link.Url); err != nil {
 		return err
 	}
+	if err := validateDoc(string(jjraw)); err != nil {
+		return err
+	}
+	var jj JsonJobs
+	json.Unmarshal(jjraw, &jj)
 	if err := ds.saveJsonJobs(c, &jj); err != nil {
 		return err
 	}

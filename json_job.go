@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	schemaURL = "https://raw.githubusercontent.com/lukasz-madon/json-job/master/schema.json"
+	schemaURL = "file://./schema.json"
 )
 
 type SalaryRange struct {
@@ -60,4 +60,33 @@ func validateDoc(document string) error {
 		errList += desc.String() + "; "
 	}
 	return errors.New(errList)
+}
+
+func (jj *JsonJobs) getJobs() []*Job {
+	var result []*Job
+	for _, job := range jj.Jobs {
+		result = append(result, &Job{
+			CompanyName:           jj.Company,
+			CompanyURL:            jj.Url,
+			CompanyRemoteFriendly: jj.RemoteFriendly,
+			CompanyMarket:         jj.Market,
+			CompanySize:           jj.Size,
+			Position:              job.Position,
+			Title:                 job.Title,
+			Description:           job.Description,
+			Url:                   job.Url,
+			Type:                  job.Type,
+			Posted:                job.Posted,
+			Location:              job.Location,
+			Skills:                job.Skills,
+			SalaryRangeFrom:       job.SalaryRange.From,
+			SalaryRangeTos:        job.SalaryRange.To,
+			SalaryRangeCurrency:   job.SalaryRange.Currency,
+			EquityFrom:            job.Equity.From,
+			EquityTo:              job.Equity.To,
+			Perks:                 job.Perks,
+			Apply:                 job.Apply,
+		})
+	}
+	return result
 }

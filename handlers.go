@@ -38,7 +38,7 @@ func (g *Gorgonzola) addHandler(w http.ResponseWriter, r *http.Request) error {
 		if err != nil {
 			return err
 		}
-		tm.set("saved", true)
+		http.Redirect(w, r, "/", http.StatusFound)
 	}
 	return tm.render("templates/layout.html", "templates/add.html")
 }
