@@ -9,8 +9,10 @@ import (
 	"appengine/datastore"
 )
 
+// Datastore implements the Storage interface targeting GAE Datastore
 type Datastore struct{}
 
+// NewDatastore creates new Datastore
 func NewDatastore() *Datastore {
 	return &Datastore{}
 }
@@ -21,7 +23,7 @@ func (ds *Datastore) saveJob(c appengine.Context, job *Job) error {
 	return err
 }
 
-func (ds *Datastore) saveJsonJobs(c appengine.Context, key string, jj *JsonJobs) error {
+func (ds *Datastore) saveJSONJobs(c appengine.Context, key string, jj *JSONJobs) error {
 	for _, job := range jj.getJobs(key) {
 		job.Hash = job.getHash()
 		if err := ds.saveJob(c, job); err != nil {
@@ -46,10 +48,11 @@ func (ds *Datastore) disableOldJobs(c appengine.Context, key *datastore.Key) err
 	return nil
 }
 
+// AddURL adds new Json-job url to the job board
 func (ds *Datastore) AddURL(r *http.Request, url string) error {
 	c := appengine.NewContext(r)
 	link := &Link{
-		Url:     url,
+		URL:     url,
 		Created: time.Now(),
 	}
 	key := datastore.NewKey(c, "Link", url, 0, nil)
@@ -61,15 +64,15 @@ func (ds *Datastore) AddURL(r *http.Request, url string) error {
 	}
 	var jjraw []byte
 	var err error
-	if jjraw, err = getJSONJobsDoc(c, link.Url); err != nil {
+	if jjraw, err = getJSONJobsDoc(c, link.URL); err != nil {
 		return err
 	}
 	if err := validateDoc(string(jjraw)); err != nil {
 		return err
 	}
-	var jj JsonJobs
+	var jj JSONJobs
 	json.Unmarshal(jjraw, &jj)
-	if err := ds.saveJsonJobs(c, key.Encode(), &jj); err != nil {
+	if err := ds.saveJSONJobs(c, key.Encode(), &jj); err != nil {
 		return err
 	}
 	link.Fetched = time.Now()
@@ -79,6 +82,7 @@ func (ds *Datastore) AddURL(r *http.Request, url string) error {
 	return nil
 }
 
+// GetJobs returns maximum `limit` jobs ordered by creation date
 func (ds *Datastore) GetJobs(r *http.Request, limit int) ([]Job, error) {
 	var jobs []Job
 	c := appengine.NewContext(r)
@@ -87,6 +91,7 @@ func (ds *Datastore) GetJobs(r *http.Request, limit int) ([]Job, error) {
 	return jobs, err
 }
 
+// GetJob returns single job by hash value
 func (ds *Datastore) GetJob(r *http.Request, hash string) (*Job, error) {
 	var job Job
 	c := appengine.NewContext(r)
@@ -102,6 +107,7 @@ func (ds *Datastore) GetJob(r *http.Request, hash string) (*Job, error) {
 	return &job, err
 }
 
+// Update updates the job offers for single Link
 func (ds *Datastore) Update(r *http.Request) error {
 	c := appengine.NewContext(r)
 	q := datastore.NewQuery("Link").Order("-Fetched").Limit(1)
@@ -110,7 +116,7 @@ func (ds *Datastore) Update(r *http.Request) error {
 		return err
 	}
 	if len(links) > 0 {
-		ds.AddURL(r, links[0].Url)
+		ds.AddURL(r, links[0].URL)
 	}
 	return nil
 }

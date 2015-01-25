@@ -11,18 +11,21 @@ const (
 	schemaURL = "file://./schema.json"
 )
 
+// SalaryRange contains the job salary range
 type SalaryRange struct {
 	From     int    `json:"from"`
 	To       int    `json:"to"`
 	Currency string `json:"currency"`
 }
 
+// Equity contains the job equity
 type Equity struct {
 	From float32 `json:"from"`
 	To   float32 `json:"to"`
 }
 
-type JsonJob struct {
+// JSONJob contains single job offer
+type JSONJob struct {
 	Position    string      `json:"position"`
 	Title       string      `json:"title"`
 	Description string      `json:"description"`
@@ -37,13 +40,14 @@ type JsonJob struct {
 	Apply       string      `json:"apply"`
 }
 
-type JsonJobs struct {
+// JSONJobs contains the whole jobs.json struct
+type JSONJobs struct {
 	Company        string    `json:"company"`
 	URL            string    `json:"url"`
 	RemoteFriendly bool      `json:"remoteFriendly"`
 	Market         string    `json:"market"`
 	Size           string    `json:"size"`
-	Jobs           []JsonJob `json:"jobs"`
+	Jobs           []JSONJob `json:"jobs"`
 }
 
 func validateDoc(document string) error {
@@ -63,7 +67,7 @@ func validateDoc(document string) error {
 	return errors.New(errList)
 }
 
-func (jj *JsonJobs) getJobs(key string) []*Job {
+func (jj *JSONJobs) getJobs(key string) []*Job {
 	var result []*Job
 	for _, job := range jj.Jobs {
 		result = append(result, &Job{

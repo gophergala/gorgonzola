@@ -6,10 +6,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Gorgonzola is the main application structure
 type Gorgonzola struct {
 	storage Storage
 }
 
+// NewGorgonzola creates Gorgonzola
 func NewGorgonzola() *Gorgonzola {
 	return &Gorgonzola{
 		storage: NewDatastore(),
@@ -28,6 +30,7 @@ func (g *Gorgonzola) setHandlers() {
 	http.Handle("/", r)
 }
 
+// Run initializes the application
 func (g *Gorgonzola) Run() {
 	g.setHandlers()
 }

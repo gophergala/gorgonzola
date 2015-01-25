@@ -8,12 +8,14 @@ import (
 	"time"
 )
 
+// Link contains Json-job link
 type Link struct {
-	Url     string
+	URL     string
 	Created time.Time
 	Fetched time.Time
 }
 
+// Job contains single flattened job offer
 type Job struct {
 	LinkKey               string
 	Hash                  string
@@ -41,6 +43,7 @@ type Job struct {
 	Created               time.Time
 }
 
+// Storage interface to handle data persistence
 type Storage interface {
 	AddURL(r *http.Request, url string) error
 	GetJobs(r *http.Request, limit int) ([]Job, error)

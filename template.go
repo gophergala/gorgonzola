@@ -7,12 +7,14 @@ import (
 
 type templateData map[string]interface{}
 
+// Template is the user facing template helper structure
 type Template struct {
 	data   templateData
 	layout *template.Template
 	w      http.ResponseWriter
 }
 
+// NewTemplate creates new Template
 func NewTemplate(w http.ResponseWriter) *Template {
 	return &Template{
 		data:   make(templateData),

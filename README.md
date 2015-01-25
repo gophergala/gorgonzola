@@ -1,4 +1,4 @@
-# gorgonzola
+# gorgonzola [![GoDoc](https://godoc.org/github.com/gophergala/gorgonzola?status.svg)](https://godoc.org/github.com/gophergala/gorgonzola)
 
 Gorgonzola is simple barebone job board using the Json-job format to aggregate job offers.
 
