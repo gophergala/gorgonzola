@@ -4,6 +4,12 @@ runtime: go
 api_version: go1
 
 handlers:
+- url: /robots\.txt
+  static_files: assets/robots.txt
+  upload: assets/robots\.txt
+- url: /favicon\.ico
+  static_files: assets/favicon.ico
+  upload: assets/favicon\.ico
 - url: /task/update
   script: _go_app
   login: admin
