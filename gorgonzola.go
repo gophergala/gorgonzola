@@ -7,13 +7,11 @@ import (
 )
 
 type Gorgonzola struct {
-	c       *Config
 	storage Storage
 }
 
 func NewGorgonzola() *Gorgonzola {
 	return &Gorgonzola{
-		c:       NewConfig(),
 		storage: NewDatastore(),
 	}
 }
