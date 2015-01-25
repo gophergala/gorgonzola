@@ -25,6 +25,8 @@ func (g *Gorgonzola) setHandlers() {
 	r.HandleFunc("/", httpHandler(g.indexHandler).ServeHTTP).Methods("GET")
 	r.HandleFunc("/job/{key}", httpHandler(g.jobHandler).ServeHTTP).Methods("GET")
 	r.HandleFunc("/add.html", httpHandler(g.addHandler).ServeHTTP).Methods("GET", "POST")
+	r.HandleFunc("/thankyou.html", httpHandler(g.thankyouHandler).ServeHTTP).Methods("GET")
+	r.HandleFunc("/task/update", httpHandler(g.taskUpdateHandler).ServeHTTP).Methods("GET")
 	http.Handle("/", r)
 }
 

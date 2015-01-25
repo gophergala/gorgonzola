@@ -10,8 +10,7 @@ import (
 	"appengine/urlfetch"
 )
 
-func getJSONJobsDoc(r *http.Request, url string) ([]byte, error) {
-	c := appengine.NewContext(r)
+func getJSONJobsDoc(c appengine.Context, url string) ([]byte, error) {
 	client := urlfetch.Client(c)
 	resp, err := client.Get(url)
 	if err != nil {

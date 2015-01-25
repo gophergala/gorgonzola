@@ -33,14 +33,25 @@ func (g *Gorgonzola) addHandler(w http.ResponseWriter, r *http.Request) error {
 	tm := NewTemplate(w)
 	if r.Method == "POST" {
 		url := r.FormValue("url")
-		if err := validateURL(url); err != nil {
-			return err
+		if url != "" {
+			if err := validateURL(url); err != nil {
+				return err
+			}
+			err := g.storage.AddURL(r, url)
+			if err != nil {
+				return err
+			}
+			http.Redirect(w, r, "/thankyou.html", http.StatusFound)
 		}
-		err := g.storage.AddURL(r, url)
-		if err != nil {
-			return err
-		}
-		http.Redirect(w, r, "/", http.StatusFound)
 	}
 	return tm.render("templates/layout.html", "templates/add.html")
+}
+
+func (g *Gorgonzola) thankyouHandler(w http.ResponseWriter, r *http.Request) error {
+	tm := NewTemplate(w)
+	return tm.render("templates/layout.html", "templates/thankyou.html")
+}
+
+func (g *Gorgonzola) taskUpdateHandler(w http.ResponseWriter, r *http.Request) error {
+	return g.storage.Update(r)
 }

@@ -63,10 +63,11 @@ func validateDoc(document string) error {
 	return errors.New(errList)
 }
 
-func (jj *JsonJobs) getJobs() []*Job {
+func (jj *JsonJobs) getJobs(key string) []*Job {
 	var result []*Job
 	for _, job := range jj.Jobs {
 		result = append(result, &Job{
+			LinkKey:               key,
 			CompanyName:           jj.Company,
 			CompanyURL:            jj.URL,
 			CompanyRemoteFriendly: jj.RemoteFriendly,
@@ -81,12 +82,13 @@ func (jj *JsonJobs) getJobs() []*Job {
 			Location:              job.Location,
 			Skills:                job.Skills,
 			SalaryRangeFrom:       job.SalaryRange.From,
-			SalaryRangeTos:        job.SalaryRange.To,
+			SalaryRangeTo:         job.SalaryRange.To,
 			SalaryRangeCurrency:   job.SalaryRange.Currency,
 			EquityFrom:            job.Equity.From,
 			EquityTo:              job.Equity.To,
 			Perks:                 job.Perks,
 			Apply:                 job.Apply,
+			Active:                true,
 			Created:               time.Now(),
 		})
 	}

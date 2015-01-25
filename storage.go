@@ -10,11 +10,12 @@ import (
 
 type Link struct {
 	Url     string
-	Added   time.Time
+	Created time.Time
 	Fetched time.Time
 }
 
 type Job struct {
+	LinkKey               string
 	Hash                  string
 	CompanyName           string
 	CompanyURL            string
@@ -30,19 +31,21 @@ type Job struct {
 	Location              string
 	Skills                []string
 	SalaryRangeFrom       int
-	SalaryRangeTos        int
+	SalaryRangeTo         int
 	SalaryRangeCurrency   string
 	EquityFrom            float32
 	EquityTo              float32
 	Perks                 []string
 	Apply                 string
+	Active                bool
 	Created               time.Time
 }
 
 type Storage interface {
 	AddURL(r *http.Request, url string) error
 	GetJobs(r *http.Request, limit int) ([]Job, error)
-	GetJob(r *http.Request, key string) (*Job, error)
+	GetJob(r *http.Request, hash string) (*Job, error)
+	Update(r *http.Request) error
 }
 
 func (j *Job) getHash() string {
